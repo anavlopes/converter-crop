@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Crop Box</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <style>
+        .container
+        {
+            position: absolute;
+            top: 10%; left: 10%; right: 0; bottom: 0;
+        }
+        .action
+        {
+            width: 400px;
+            height: 30px;
+            margin: 10px 0;
+        }
+        .cropped>img
+        {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="imageBox">
+      <div class="output form-horizontal" style="display: none">
+        <img class="img">
+      </div>
+    <div class="thumbBox"></div>
+    <div class="spinner" style="display: none">Loading...</div>
+   </div>
+  <div class="action">
+    <form class="form-horizontal" id="img2b64">
+        <label>URL:</label>
+          <input type="url" name="url" id="file" placeholder="Insert an IMAGE-URL" value="http://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png" required />
+          <input type="button" class="btn btn-default" value="Load">
+          <input type="button" id="btnCrop" value="Crop" style="float: right">
+          <input type="button" id="btnZoomIn" value="+" style="float: right">
+          <input type="button" id="btnZoomOut" value="-" style="float: right">
+    </form>
+  </div>  
+  <div class="cropped"></div>
+</div>
+<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script type="text/javascript">
+    $(window).load(function() {
+        var options =
+        {
+            thumbBox: '.thumbBox',
+            spinner: '.spinner',
+        }
+        var cropper;
+        $('.btn-default').on('click', function(){
+            toDataUrl($('#file').val(), function(base64Img) {
+                options.imgSrc = base64Img;
+                cropper = $('.imageBox').cropbox(options);
+            });
+           })
+        $('#btnCrop').on('click', function(){
+            var img = cropper.getDataURL();
+            $('.cropped').append('<img src="'+img+'">');
+            })
+        $('#btnZoomIn').on('click', function(){
+            cropper.zoomIn();
+        })
+        $('#btnZoomOut').on('click', function(){
+            cropper.zoomOut();
+        })
+        });
+</script>
+<script src="converter.js"></script>
+<script src="crop.js"></script>
+
+
+</body>
+</html>
+
+
+
+
